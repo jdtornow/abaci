@@ -6,7 +6,7 @@ require 'abaci/version'
 
 Gem::Specification.new do |s|
   s.name          = "abaci"
-  s.version       = abaci::VERSION
+  s.version       = Abaci::VERSION
   s.platform      = Gem::Platform::RUBY
   s.authors       = ["John Tornow"]
   s.email         = ["john@johntornow.com"]
@@ -16,5 +16,5 @@ Gem::Specification.new do |s|
   s.files         = Dir.glob("{test,lib,vendor}/**/*") + %w(README.md CHANGELOG.md)
   s.require_paths = ["lib"]
 
-  s.required_ruby_version     = Gem::Requirement.new('>= 1.9.2')
+  s.required_ruby_version = Gem::Requirement.new('>= 1.8.7')
 end
