@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    abaci (0.1.0)
+      redis (>= 2.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    redis (3.0.2)
+    yard (0.8.2.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  abaci!
+  yard

@@ -16,5 +16,7 @@ Gem::Specification.new do |s|
   s.files         = Dir.glob("{test,lib,vendor}/**/*") + %w(README.md CHANGELOG.md)
   s.require_paths = ["lib"]
 
+  s.add_dependency 'redis', '>=2.0'
+
   s.required_ruby_version = Gem::Requirement.new('>= 1.8.7')
 end
