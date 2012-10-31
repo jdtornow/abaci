@@ -6,7 +6,7 @@ module Abaci
   class Store
     def initialize(options)
       @redis = options[:redis] || Redis.current
-      @prefix = options[:prefix] || 'abaci'
+      @prefix = options[:prefix] || 'ab'
     end
 
     def decrby(key, by = 1)
