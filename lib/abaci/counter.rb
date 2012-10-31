@@ -2,9 +2,8 @@ module Abaci
   class Counter
     attr_reader :key
 
-    def initialize(category = nil)
-      @category = category
-      @key = category
+    def initialize(key = nil)
+      @key = key
     end
 
     def decr(by = 1)
@@ -23,7 +22,9 @@ module Abaci
     end
 
     def get_last_days(number_of_days = 30)
-      dates = (number_of_days.to_i.days.ago.to_date..Date.today).map { |d| d.strftime('%Y:%-m:%-d') }
+      seconds = number_of_days.to_i * 86400
+      start = (Date.today - Rational(seconds, 86400)).to_date
+      dates = (start..Date.today).map { |d| d.strftime('%Y:%-m:%-d') }
       dates.map { |date| Abaci.store.get("#{key}:#{date}" ).to_i }.reduce(:+)
     end
 

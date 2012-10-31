@@ -9,18 +9,35 @@ module Abaci
       @prefix = options[:prefix] || 'abaci'
     end
 
+    def decrby(key, by = 1)
+      exec(:decrby, key, by)
+    end
+
+    def del(key)
+      exec(:del, key)
+    end
+
     def get(key)
-      exec(:get, prefixed_key(key))
+      exec(:get, key)
+    end
+
+    def incrby(key, by = 1)
+      exec(:incrby, key, by)
+    end
+
+    def keys(pattern)
+      sub = Regexp.new("^#{Abaci.prefix}:")
+      exec(:keys, pattern).map { |k| k.gsub(sub, '') }
     end
 
     def set(key, value)
-      exec(:set, prefixed_key(key), value)
+      exec(:set, key, value)
     end
 
     protected
-      def exec(command, *args)
+      def exec(command, key, *args)
         if @redis and @redis.respond_to?(command)
-          @redis.send(command, *args)
+          @redis.send(command, prefixed_key(key), *args)
         end
       end
 
