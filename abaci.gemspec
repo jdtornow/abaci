@@ -18,5 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'redis', '>=2.0'
 
+  s.required_ruby_version = '>= 1.9.2'
+
   s.required_ruby_version = Gem::Requirement.new('>= 1.8.7')
 end
