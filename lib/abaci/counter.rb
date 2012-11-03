@@ -18,6 +18,7 @@ module Abaci
 
     def del
       keys.each { |k| Abaci.store.del(k) }
+      Metric.remove(key)
       true
     end
 
@@ -27,9 +28,7 @@ module Abaci
     end
 
     def get_last_days(number_of_days = 30)
-      seconds = number_of_days.to_i * 86400
-      start = (Date.today - Rational(seconds, 86400)).to_date
-      dates = (start..Date.today).map { |d| d.strftime('%Y:%-m:%-d') }
+      dates = DateRange.ago(number_of_days).keys
       dates.map { |date| Abaci.store.get("#{key}:#{date}" ).to_i }.reduce(:+)
     end
 
@@ -40,6 +39,7 @@ module Abaci
 
     def increment_at(date = nil, by = 1)
       date = Time.now unless date.respond_to?(:strftime)
+      Metric.add(key)
       run(:incrby, by, date)
     end
 
@@ -50,19 +50,19 @@ module Abaci
     ## Class methods ##
     ############################################################################
 
+    # Alias for Counter#new(key)
+    def self.[](key)
+      Counter.new(key)
+    end
+
     # Returns a hash of all current values
     def self.all
-      keys.inject({}) { |hash, key| hash[key] = Abaci.store.get(key).to_i; hash }
+      Metric.all.inject({}) { |hash, key| hash[key.to_sym] = Abaci.store.get(key).to_i; hash }
     end
 
     # Gets all currently logged stat keys
     def self.keys(search = "*")
       Abaci.store.keys(search).sort
-    end
-
-    # Alias for Counter#new(key)
-    def self.[](key)
-      Counter.new(key)
     end
 
     def self.method_missing(method, *args)
@@ -74,11 +74,9 @@ module Abaci
         return self[$2].del
       elsif ms =~ /^last_(\d*)_days_of_([a-z_]*)$/
         return self[$2].get_last_days($1)
-      elsif ms =~ /[a-z_]*/
-        return self[ms].get(*args)
+      else
+        self[ms].get(*args)
       end
-
-      super
     end
 
     ## Protected methods ##

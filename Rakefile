@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), *%w(lib)))
 
 task :default => [ :test ]
 
+require 'rdoc/task'
 require 'rake/testtask'
 
 Rake::TestTask.new(:test) do |test|
