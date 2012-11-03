@@ -7,9 +7,14 @@ module Abaci
     end
 
     def decr(by = 1)
-      run(:decrby, by)
+    decrement_at(nil, by)
     end
     alias_method :decrement, :decr
+
+    def decrement_at(date = nil, by = 1)
+      date = Time.now unless date.respond_to?(:strftime)
+      run(:decrby, by, date)
+    end
 
     def del
       keys.each { |k| Abaci.store.del(k) }
@@ -29,9 +34,14 @@ module Abaci
     end
 
     def incr(by = 1)
-      run(:incrby, by)
+      increment_at(nil, by)
     end
     alias_method :increment, :incr
+
+    def increment_at(date = nil, by = 1)
+      date = Time.now unless date.respond_to?(:strftime)
+      run(:incrby, by, date)
+    end
 
     def keys
       Abaci.store.keys("#{key}*")
@@ -75,8 +85,8 @@ module Abaci
     ############################################################################
 
     protected
-      def run(method, by)
-        now = Time.now.strftime('%Y/%m/%d/%k/%M').split('/')
+      def run(method, by, date)
+        now = date.strftime('%Y/%m/%d/%k/%M').split('/')
 
         now.inject(key) do |memo, t|
           memo = "#{memo}:#{t.to_i}"
