@@ -1,3 +1,8 @@
+## Abaci 0.3.0
+
+* Dependency updates, bump minimum Ruby version.
+* Add some better tests and general clean up
+
 ## Abaci 0.2.0
 
 * Added testing suite
