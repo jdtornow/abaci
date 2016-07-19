@@ -8,14 +8,14 @@ What does *abaci* mean? Its the plural form of [Abacus](http://en.wikipedia.org/
 
 ## Requirements
 
-* Ruby 1.9.2+
+* Ruby 2.1+
 * Redis
 
 ## Configuration
 
 Abaci will use the default Redis instance by default, assumed to be available via `Redis.current`. To use with a specific Redis instance, pass a `Redis` object to `Abaci.options[:redis]`. You can use it this way with [Redis Namespace](https://github.com/defunkt/redis-namespace) if necessary.
 
-By default, the prefix `ab` is used before all stats stored in Redis. If you are using running multiple apps using the same Redis instance (likely in development mode), you can change the prefix by setting `Abaci.options[:prefix]`.
+By default, the prefix `stats` is used before all stats stored in Redis. If you are using running multiple apps using the same Redis instance (likely in development mode), you can change the prefix by setting `Abaci.options[:prefix]`.
 
 Here's a sample configuration that we use often:
 

@@ -1,10 +1,10 @@
-require 'abaci/version'
+require "abaci/version"
 
 module Abaci
-  autoload :Counter,      'abaci/counter'
-  autoload :DateRange,    'abaci/date_range'
-  autoload :Metric,       'abaci/metric'
-  autoload :Store,        'abaci/store'
+  autoload :Counter,      "abaci/counter"
+  autoload :DateRange,    "abaci/date_range"
+  autoload :Metric,       "abaci/metric"
+  autoload :Store,        "abaci/store"
 
   # Configuration options
   class << self
@@ -19,8 +19,8 @@ module Abaci
 
     def options
       @options ||= {
-        :redis => nil,
-        :prefix => 'ab'
+        redis: nil,
+        prefix: "stats"
       }
     end
 

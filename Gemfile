@@ -1,17 +1,14 @@
-source :rubygems
+source "https://rubygems.org"
 
 gemspec
 
-platforms :ruby_19 do
-  gem 'minitest', :require => false
-  gem 'simplecov', :require => false
-  gem 'turn', :require => false
+group :test do
+  gem "simplecov", :require => false
+  gem "rspec", "~> 3.5"
+  gem "activesupport", "~> 5.0"
 end
 
 group :development do
-  gem 'rake'
-  gem 'yard'
-  gem 'rdoc'
-  gem 'mocha', '~> 0.10'
-  gem 'shoulda', '~> 3.0'
+  gem "yard"
+  gem "pry"
 end

@@ -1,5 +1,5 @@
 module Abaci
-  require 'redis'
+  require "redis"
 
   # Common interface for Redis. In the future this could be
   # swapped out for an alternate datastore.
@@ -8,7 +8,7 @@ module Abaci
 
     def initialize(options)
       @redis = options[:redis] || Redis.current
-      @prefix = options[:prefix] || 'ab'
+      @prefix = options[:prefix] || "stats"
     end
 
     def decrby(key, by = 1)
@@ -28,8 +28,8 @@ module Abaci
     end
 
     def keys(pattern = "*")
-      sub = Regexp.new("^#{prefix}:")
-      exec(:keys, pattern).map { |k| k.gsub(sub, '') }
+      sub = Regexp.new("^#{ prefix }:")
+      exec(:keys, pattern).map { |k| k.gsub(sub, "") }
     end
 
     def set(key, value)
@@ -37,32 +37,34 @@ module Abaci
     end
 
     def sadd(key, member)
-      exec_without_prefix(:sadd, "#{prefix}-#{key}", member)
+      exec_without_prefix(:sadd, "#{ prefix }-#{ key }", member)
     end
 
     def smembers(key)
-      exec_without_prefix(:smembers, "#{prefix}-#{key}")
+      exec_without_prefix(:smembers, "#{ prefix }-#{ key }")
     end
 
     def srem(key, member)
-      exec_without_prefix(:srem, "#{prefix}-#{key}", member)
+      exec_without_prefix(:srem, "#{ prefix }-#{ key }", member)
     end
 
-    protected
-      def exec(command, key, *args)
-        if @redis and @redis.respond_to?(command)
-          @redis.send(command, prefixed_key(key), *args)
-        end
-      end
+    private
 
-      def exec_without_prefix(command, key, *args)
-        if @redis and @redis.respond_to?(command)
-          @redis.send(command, key, *args)
-        end
+    def exec(command, key, *args)
+      if @redis and @redis.respond_to?(command)
+        @redis.send(command, prefixed_key(key), *args)
       end
+    end
 
-      def prefixed_key(key)
-        [ prefix, key ].compact.join(':')
+    def exec_without_prefix(command, key, *args)
+      if @redis and @redis.respond_to?(command)
+        @redis.send(command, key, *args)
       end
+    end
+
+    def prefixed_key(key)
+      [ prefix, key ].compact.join(":")
+    end
+
   end
 end

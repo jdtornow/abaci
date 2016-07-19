@@ -1,5 +1,6 @@
 module Abaci
   class DateRange
+
     attr_reader :start, :finish
 
     def initialize(start, finish)
@@ -17,7 +18,7 @@ module Abaci
     end
 
     def keys
-      days.map { |d| d.strftime('%Y:%-m:%-d') }
+      days.map { |d| d.strftime("%Y:%-m:%-d") }
     end
 
     def range

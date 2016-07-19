@@ -3,11 +3,11 @@ module Abaci
     attr_reader :key
 
     def initialize(key = nil)
-      @key = key
+      @key = key.to_s.downcase.strip
     end
 
     def decr(by = 1)
-    decrement_at(nil, by)
+      decrement_at(nil, by)
     end
     alias_method :decrement, :decr
 
@@ -23,13 +23,13 @@ module Abaci
     end
 
     def get(year = nil, month = nil, day = nil, hour = nil, min = nil)
-      get_key = [ key, year, month, day, hour, min ].compact.join(':')
+      get_key = [ key, year, month, day, hour, min ].compact.join(":")
       Abaci.store.get(get_key).to_i
     end
 
     def get_last_days(number_of_days = 30)
       dates = DateRange.ago(number_of_days).keys
-      dates.map { |date| Abaci.store.get("#{key}:#{date}" ).to_i }.reduce(:+)
+      dates.map { |date| Abaci.store.get("#{ key }:#{ date }" ).to_i }.reduce(:+)
     end
 
     def incr(by = 1)
@@ -44,11 +44,8 @@ module Abaci
     end
 
     def keys
-      Abaci.store.keys("#{key}*")
+      Abaci.store.keys("#{ key }*")
     end
-
-    ## Class methods ##
-    ############################################################################
 
     # Alias for Counter#new(key)
     def self.[](key)
@@ -68,31 +65,30 @@ module Abaci
     def self.method_missing(method, *args)
       ms = method.to_s.downcase.strip
 
-      if ms =~ /(incr|decr)(ement|ease)?_([a-z_]*)$/
+      if ms =~ /(incr|decr)(ement|ease)?_([a-z0-9_]*)$/
         return self[$3].send($1, *args)
-      elsif ms =~ /^(clear|reset|del)_([a-z_]*)!$/
+      elsif ms =~ /^(clear|reset|del)_([a-z0-9_]*)!$/
         return self[$2].del
-      elsif ms =~ /^last_(\d*)_days_of_([a-z_]*)$/
+      elsif ms =~ /^last_(\d*)_days_of_([a-z0-9_]*)$/
         return self[$2].get_last_days($1)
       else
         self[ms].get(*args)
       end
     end
 
-    ## Protected methods ##
-    ############################################################################
+    private
 
-    protected
-      def run(method, by, date)
-        now = date.strftime('%Y/%m/%d/%k/%M').split('/')
+    def run(method, by, date)
+      now = date.strftime("%Y/%m/%d/%k/%M").split("/")
 
-        now.inject(key) do |memo, t|
-          memo = "#{memo}:#{t.to_i}"
-          Abaci.store.send(method, memo, by)
-          memo
-        end
-
-        Abaci.store.send(method, key, by)
+      now.inject(key) do |memo, t|
+        memo = "#{ memo }:#{ t.to_i }"
+        Abaci.store.send(method, memo, by)
+        memo
       end
+
+      Abaci.store.send(method, key, by)
+    end
+
   end
 end
