@@ -121,6 +121,16 @@ RSpec.describe Abaci::Counter do
     end
   end
 
+  describe "#get_date" do
+    it "returns the value for the given date" do
+      expect(Abaci[:testers].get).to eq(0)
+      Abaci[:testers].increment_at(1.day.ago.to_date)
+      Abaci[:testers].increment_at(15.days.ago.to_date)
+      expect(Abaci[:testers].get_date(15.days.ago.to_date)).to eq(1)
+      expect(Abaci[:testers].get).to eq(2)
+    end
+  end
+
   describe "#increment" do
     it "bumps the stat by 1" do
       expect(Abaci[:testers].get).to eq(0)

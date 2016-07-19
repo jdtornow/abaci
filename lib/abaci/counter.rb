@@ -27,6 +27,11 @@ module Abaci
       Abaci.store.get(get_key).to_i
     end
 
+    def get_date(date)
+      get_key = date.strftime("%Y:%-m:%-d")
+      Abaci.store.get("#{ key }:#{ get_key }").to_i
+    end
+
     def get_last_days(number_of_days = 30)
       dates = DateRange.ago(number_of_days).keys
       dates.map { |date| Abaci.store.get("#{ key }:#{ date }" ).to_i }.reduce(:+)
