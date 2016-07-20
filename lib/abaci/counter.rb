@@ -1,4 +1,6 @@
 module Abaci
+  require "active_support/core_ext/time"
+
   class Counter
     attr_reader :key
 
@@ -12,7 +14,7 @@ module Abaci
     alias_method :decrement, :decr
 
     def decrement_at(date = nil, by = 1)
-      date = Time.now unless date.respond_to?(:strftime)
+      date = now unless date.respond_to?(:strftime)
       run(:decrby, by, date)
     end
 
@@ -28,7 +30,7 @@ module Abaci
     end
 
     def get_date(date)
-      get_key = date.strftime("%Y:%-m:%-d")
+      get_key = date_in_time_zone(date).strftime("%Y:%-m:%-d")
       Abaci.store.get("#{ key }:#{ get_key }").to_i
     end
 
@@ -43,7 +45,7 @@ module Abaci
     alias_method :increment, :incr
 
     def increment_at(date = nil, by = 1)
-      date = Time.now unless date.respond_to?(:strftime)
+      date = now unless date.respond_to?(:strftime)
       Metric.add(key)
       run(:incrby, by, date)
     end
@@ -84,7 +86,7 @@ module Abaci
     private
 
     def run(method, by, date)
-      now = date.strftime("%Y/%m/%d/%k/%M").split("/")
+      now = date_in_time_zone(date).strftime("%Y/%m/%d/%k/%M").split("/")
 
       now.inject(key) do |memo, t|
         memo = "#{ memo }:#{ t.to_i }"
@@ -93,6 +95,14 @@ module Abaci
       end
 
       Abaci.store.send(method, key, by)
+    end
+
+    def date_in_time_zone(raw_date)
+      raw_date.in_time_zone(Abaci.time_zone)
+    end
+
+    def now
+      Time.now.in_time_zone(Abaci.time_zone)
     end
 
   end

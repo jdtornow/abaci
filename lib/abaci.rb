@@ -20,7 +20,8 @@ module Abaci
     def options
       @options ||= {
         redis: nil,
-        prefix: "stats"
+        prefix: "stats",
+        time_zone: "UTC"
       }
     end
 
@@ -47,9 +48,21 @@ module Abaci
       Counter.all
     end
 
+    def time_zone
+      options[:time_zone]
+    end
+
+    def time_zone=(value)
+      options[:time_zone] = value
+    end
+
     def method_missing(method, *args)
       Counter.send(method, *args)
     end
+  end
+
+  if defined?(Rails)
+    require "abaci/railtie"
   end
 
   # Alias Stat to Abaci::Counter if nothing else is using the Stat namespace

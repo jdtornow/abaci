@@ -1,4 +1,6 @@
 module Abaci
+  require "active_support/core_ext/time"
+
   class DateRange
 
     attr_reader :start, :finish
@@ -27,16 +29,21 @@ module Abaci
 
     def self.ago(days = 30)
       seconds = days.to_i * 86400
-      start = (Date.today - Rational(seconds, 86400)).to_date
-      new(start, Date.today)
+      start = (now.to_date - Rational(seconds, 86400)).to_date
+      new(start, now.to_date)
     end
 
     def self.between(start, finish)
       new(start, finish)
     end
 
-    def self.since(date)
-      new(date, Date.today)
+    def self.now
+      Time.now.in_time_zone(Abaci.time_zone)
     end
+
+    def self.since(date)
+      new(date, now.to_date)
+    end
+
   end
 end

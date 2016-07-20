@@ -64,6 +64,16 @@ Abaci['views'].keys
 Abaci['views'].del
 ```
 
+## Time Zone
+
+When used within a Rails app, Abaci will use the same time zone as your Rails app, so there is no configuration needed.
+
+To manually override the time zone used in Abaci, just set the config variable:
+
+```ruby
+Abaci.time_zone = "Central Time (US & Canada)"
+```
+
 ## Issues
 
 If you have any issues or find bugs running Abaci, please [report them on Github](https://github.com/jdtornow/abaci/issues). While most functions should be stable, Abaci is still in its infancy and certain issues may be present.

@@ -42,10 +42,10 @@ RSpec.describe Abaci::Counter do
     it "bumps the stat on a particular date" do
       expect(Abaci[:testers].get).to eq(0)
       Abaci[:testers].increment(10)
-      Abaci[:testers].decrement_at(1.day.ago.to_date)
-      Abaci[:testers].decrement_at(15.days.ago.to_date)
-      Abaci[:testers].decrement_at(20.days.ago.to_date)
-      Abaci[:testers].decrement_at(35.days.ago.to_date, 3)
+      Abaci[:testers].decrement_at(1.day.ago)
+      Abaci[:testers].decrement_at(15.days.ago)
+      Abaci[:testers].decrement_at(20.days.ago)
+      Abaci[:testers].decrement_at(35.days.ago, 3)
       expect(Abaci[:testers].get).to eq(4)
     end
   end
@@ -94,10 +94,10 @@ RSpec.describe Abaci::Counter do
   describe "#get_last_days" do
     it "returns the number of items in the last x days" do
       expect(Abaci[:testers].get).to eq(0)
-      Abaci[:testers].increment_at(1.day.ago.to_date)
-      Abaci[:testers].increment_at(15.days.ago.to_date)
-      Abaci[:testers].increment_at(20.days.ago.to_date)
-      Abaci[:testers].increment_at(35.days.ago.to_date, 2)
+      Abaci[:testers].increment_at(1.day.ago)
+      Abaci[:testers].increment_at(15.days.ago)
+      Abaci[:testers].increment_at(20.days.ago)
+      Abaci[:testers].increment_at(35.days.ago, 2)
       expect(Abaci[:testers].get).to eq(5)
 
       expect(Abaci[:testers].get_last_days(5)).to eq(1)
@@ -108,10 +108,10 @@ RSpec.describe Abaci::Counter do
 
     it "returns the current stat value from method_missing" do
       expect(Abaci[:testers].get).to eq(0)
-      Abaci[:testers].increment_at(1.day.ago.to_date)
-      Abaci[:testers].increment_at(15.days.ago.to_date)
-      Abaci[:testers].increment_at(20.days.ago.to_date)
-      Abaci[:testers].increment_at(35.days.ago.to_date, 2)
+      Abaci[:testers].increment_at(1.day.ago)
+      Abaci[:testers].increment_at(15.days.ago)
+      Abaci[:testers].increment_at(20.days.ago)
+      Abaci[:testers].increment_at(35.days.ago, 2)
       expect(Abaci[:testers].get).to eq(5)
 
       expect(Abaci.last_5_days_of_testers).to eq(1)
@@ -124,9 +124,9 @@ RSpec.describe Abaci::Counter do
   describe "#get_date" do
     it "returns the value for the given date" do
       expect(Abaci[:testers].get).to eq(0)
-      Abaci[:testers].increment_at(1.day.ago.to_date)
-      Abaci[:testers].increment_at(15.days.ago.to_date)
-      expect(Abaci[:testers].get_date(15.days.ago.to_date)).to eq(1)
+      Abaci[:testers].increment_at(1.day.ago)
+      Abaci[:testers].increment_at(15.days.ago)
+      expect(Abaci[:testers].get_date(15.days.ago)).to eq(1)
       expect(Abaci[:testers].get).to eq(2)
     end
   end
@@ -166,10 +166,10 @@ RSpec.describe Abaci::Counter do
   describe "#increment_at" do
     it "bumps the stat on a particular date" do
       expect(Abaci[:testers].get).to eq(0)
-      Abaci[:testers].increment_at(1.day.ago.to_date)
-      Abaci[:testers].increment_at(15.days.ago.to_date)
-      Abaci[:testers].increment_at(20.days.ago.to_date)
-      Abaci[:testers].increment_at(35.days.ago.to_date, 2)
+      Abaci[:testers].increment_at(1.day.ago)
+      Abaci[:testers].increment_at(15.days.ago)
+      Abaci[:testers].increment_at(20.days.ago)
+      Abaci[:testers].increment_at(35.days.ago, 2)
       expect(Abaci[:testers].get).to eq(5)
     end
   end

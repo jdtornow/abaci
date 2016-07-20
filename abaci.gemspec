@@ -12,11 +12,13 @@ Gem::Specification.new do |s|
   s.email         = ["john@johntornow.com"]
   s.homepage      = "http://github.com/jdtornow/abaci"
   s.summary       = "A basic stats reporting and collection tool for Ruby."
+  s.license       = "MIT"
   s.description   = %Q{Collect stats on events, activities and behaviors across time in Ruby with a Redis backend.}
   s.files         = Dir.glob("{lib,vendor}/**/*") + %w(README.md CHANGELOG.md)
   s.require_paths = ["lib"]
 
-  s.add_dependency "redis", ">= 2.0"
+  s.add_dependency "redis", ">= 3.3"
+  s.add_dependency "activesupport", ">= 4.2"
 
   s.required_ruby_version = ">= 2.2.2"
 end
