@@ -37,15 +37,15 @@ module Abaci
     end
 
     def sadd(key, member)
-      exec_without_prefix(:sadd, "#{ prefix }-#{ key }", member)
+      exec_without_prefix(:sadd, "#{ prefix }#{ key }", member)
     end
 
     def smembers(key)
-      exec_without_prefix(:smembers, "#{ prefix }-#{ key }")
+      exec_without_prefix(:smembers, "#{ prefix }#{ key }")
     end
 
     def srem(key, member)
-      exec_without_prefix(:srem, "#{ prefix }-#{ key }", member)
+      exec_without_prefix(:srem, "#{ prefix }#{ key }", member)
     end
 
     private

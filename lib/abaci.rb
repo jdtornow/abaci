@@ -19,9 +19,18 @@ module Abaci
 
     def options
       @options ||= {
+        # the redis store to use for storage
         redis: nil,
+
+        # a prefix to put before each key
         prefix: "stats",
-        time_zone: "UTC"
+
+        # the time zone to store date values in
+        time_zone: "UTC",
+
+        # separates metric keys from date parameters, change
+        # this if you want to use it elsewhere in a key
+        separator: "@"
       }
     end
 

@@ -31,12 +31,12 @@ module Abaci
 
     def get_date(date)
       get_key = date_in_time_zone(date).strftime("%Y:%-m:%-d")
-      Abaci.store.get("#{ key }:#{ get_key }").to_i
+      Abaci.store.get("#{ key }#{ Abaci.options[:separator] }#{ get_key }").to_i
     end
 
     def get_last_days(number_of_days = 30)
       dates = DateRange.ago(number_of_days).keys
-      dates.map { |date| Abaci.store.get("#{ key }:#{ date }" ).to_i }.reduce(:+)
+      dates.map { |date| Abaci.store.get("#{ key }#{ Abaci.options[:separator] }#{ date }" ).to_i }.reduce(:+)
     end
 
     def incr(by = 1)
@@ -86,15 +86,15 @@ module Abaci
     private
 
     def run(method, by, date)
-      now = date_in_time_zone(date).strftime("%Y/%m/%d/%k/%M").split("/")
-
-      now.inject(key) do |memo, t|
-        memo = "#{ memo }:#{ t.to_i }"
-        Abaci.store.send(method, memo, by)
-        memo
-      end
+      time_segments = date_in_time_zone(date).strftime('%Y/%-m/%-d/%-k/%M').split("/").map(&:to_i)
 
       Abaci.store.send(method, key, by)
+
+      time_segments.reduce([]) do |result, time|
+        result.push(time)
+        Abaci.store.send(method, "#{ key }#{ Abaci.options[:separator] }#{ result.join(":") }", by)
+        result
+      end
     end
 
     def date_in_time_zone(raw_date)
