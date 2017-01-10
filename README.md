@@ -1,6 +1,6 @@
 # Abaci
 
-[![Build Status](https://travis-ci.org/jdtornow/abaci.svg?branch=master)](http://travis-ci.org/jdtornow/abaci)
+[![Build Status](https://travis-ci.org/jdtornow/abaci.svg?branch=master)](http://travis-ci.org/jdtornow/abaci) ![](https://badge.fury.io/rb/abaci.svg)
 
 Abaci (pronounced abba-sigh) is a simple structure for the collection and reporting on numerical counters. Counters can be used to track time-based statistics for a wide array of functions within your application. Abaci uses a Redis backend to store all counters for lightning quick read and write access.
 
